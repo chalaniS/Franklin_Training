@@ -11,6 +11,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<String> data = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'ThursDay',
+    'FriDay',
+    'SaturDay',
+    'Sunday'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,30 +39,38 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Expanded(
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  separatorBuilder: (context, index) {
-                    return Container(
-                      color: Colors.grey,
-                      height: 1,
-                    );
-                  },
-                  itemCount: 20,
+                child: ListView.builder(
+                  itemCount: data.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 5),
-                      height: 50,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.blue,
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Test $index',
-                          style: const TextStyle(
-                            color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.4),
+                            spreadRadius: 3,
+                            blurRadius: 3,
                           ),
+                        ],
+                      ),
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.calendar_today,
+                          color: Colors.red,
+                        ),
+                        title: Text(
+                          data[index],
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        subtitle: Text(
+                          'day',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        trailing: Icon(
+                          Icons.favorite_outline_outlined,
+                          color: Colors.orange,
                         ),
                       ),
                     );
