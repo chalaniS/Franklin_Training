@@ -63,7 +63,8 @@ class _LoginPageState extends State<LoginPage> {
         _passwordcontroller.text == '1234') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(
+            builder: (context) => HomePage(username: _usernamecontroller.text)),
       );
     } else {
       showAllertDialog(context);
