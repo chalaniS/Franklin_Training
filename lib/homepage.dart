@@ -25,8 +25,38 @@ class _HomePageState extends State<HomePage> {
               Text(
                 'Wellcome ${widget.username}',
                 style: const TextStyle(
-                  color: Colors.deepPurpleAccent,
                   fontSize: 40,
+                ),
+              ),
+              Expanded(
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  separatorBuilder: (context, index) {
+                    return Container(
+                      color: Colors.grey,
+                      height: 1,
+                    );
+                  },
+                  itemCount: 20,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 5),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.blue,
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Test $index',
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
               ElevatedButton(
