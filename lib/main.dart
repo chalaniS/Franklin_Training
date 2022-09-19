@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:franklin_ex/splash_page.dart';
-import 'login.dart';
 
 void main() {
   runApp(const MyApp());

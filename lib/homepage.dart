@@ -1,97 +1,114 @@
 import 'package:flutter/material.dart';
-import 'package:franklin_ex/login.dart';
+import 'package:franklin_ex/user_screen.dart';
+import 'rest_api_service.dart';
+import 'user.dart';
 
 class HomePage extends StatefulWidget {
-  final String username;
-
-  const HomePage({Key? key, required this.username}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> data = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'ThursDay',
-    'FriDay',
-    'SaturDay',
-    'Sunday'
-  ];
+  final apiService = RestAPIService();
+
+  List<User> usersList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    apiService.getUsers().then((value) {
+      if (value != null) {
+        usersList = value as List<User>;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Home Page'),
-        ),
-        body: Container(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Wellcome ${widget.username}',
-                style: const TextStyle(
-                  fontSize: 40,
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.4),
-                            spreadRadius: 3,
-                            blurRadius: 3,
+      appBar: AppBar(
+        title: const Text('Home page'),
+      ),
+      body: InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => UserScreen(
+                        user: snapShot.data[index],
+                      )));
+        },
+        child: Column(
+          children: [
+            Expanded(
+              child: FutureBuilder(
+                future: apiService.getUsers(),
+                builder: (context, snapShot) {
+                  if (snapShot.hasData) {
+                    return ListView.builder(
+                      itemCount: snapShot.data?.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: ListTile(
+                              title: Text(
+                                snapShot.data![index].name ?? '',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              subtitle: Text(
+                                snapShot.data![index].city ?? '',
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              leading: ClipOval(
+                                child: Image.network(
+                                  snapShot.data[index].imge,
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60,
+                                ),
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(Icons.favorite_border),
+                                onPressed: () {},
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.calendar_today,
-                          color: Colors.red,
-                        ),
-                        title: Text(
-                          data[index],
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        subtitle: Text(
-                          'day',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        trailing: Icon(
-                          Icons.favorite_outline_outlined,
-                          color: Colors.orange,
+                        );
+                      },
+                    );
+                  } else {
+                    return Container(
+                      child: const Center(
+                        child: Text(
+                          'Loading.....',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                          ),
                         ),
                       ),
                     );
-                  },
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
+                  }
                 },
-                child: const Text(
-                  'Log',
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    color: Colors.yellow,
-                  ),
-                ),
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -17,11 +17,11 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login Page'),
-        leading: Icon(Icons.menu),
+        leading: const Icon(Icons.menu),
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(30.0),
+          padding: const EdgeInsets.all(30.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,8 +63,7 @@ class _LoginPageState extends State<LoginPage> {
         _passwordcontroller.text == '1234') {
       Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => HomePage(username: _usernamecontroller.text)),
+        MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } else {
       showAllertDialog(context);
@@ -76,12 +75,12 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: () {
         Navigator.pop(context);
       },
-      child: Text('ok'),
+      child: const Text('ok'),
     );
 
     AlertDialog alertDialog = AlertDialog(
-      title: Text('Error'),
-      content: Text('Wrong username and password'),
+      title: const Text('Error'),
+      content: const Text('Wrong username and password'),
       actions: [okButton],
     );
 
